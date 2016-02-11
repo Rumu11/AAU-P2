@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Generators\AdvancedRandomization.cs" />
     <Compile Include="Generators\BrotherGenerator.cs" />
     <Compile Include="Generators\ShittyGeneratorExample.cs" />
     <Compile Include="Program.cs" />

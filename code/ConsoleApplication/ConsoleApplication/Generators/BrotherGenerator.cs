@@ -12,28 +12,32 @@ namespace ConsoleApplication.Generators
 
 		private static readonly Dictionary<Pitch, Pitch[]> Second = new Dictionary<Pitch, Pitch[]>()
 		{
-			{
-				Pitch.CSharp4, new[] {Pitch.FSharp4, Pitch.ASharp3, Pitch.GSharp4, Pitch.F4, Pitch.CSharp3}
+            {
+                Pitch.A3, new[] {Pitch.F4, Pitch.C4, Pitch.D4, Pitch.E4, Pitch.A4}
+            },
+            {
+                Pitch.B3, new[] {Pitch.D4, Pitch.F4, Pitch.G4, Pitch.B4}
+            },
+            {
+				Pitch.C3, new[] {Pitch.F4, Pitch.A3, Pitch.G4, Pitch.E4, Pitch.C4}
 			},
 			{
-				Pitch.DSharp4, new[] {Pitch.FSharp4, Pitch.ASharp3, Pitch.GSharp3, Pitch.C3, Pitch.DSharp3}
+				Pitch.D3, new[] {Pitch.F4, Pitch.A3, Pitch.G3, Pitch.B3, Pitch.D4}
+			},
+            {
+                Pitch.E3, new[] {Pitch.B3, Pitch.C3, Pitch.G4, Pitch.A4, Pitch.E4}
+            },
+            {
+				Pitch.F3, new[] {Pitch.A3, Pitch.C3, Pitch.D3, Pitch.F4}
 			},
 			{
-				Pitch.FSharp4, new[] {Pitch.ASharp3, Pitch.CSharp3, Pitch.DSharp3, Pitch.FSharp3}
-			},
-			{
-				Pitch.GSharp4, new[] {Pitch.CSharp3, Pitch.DSharp3, Pitch.C3, Pitch.F3, Pitch.GSharp3}
-			},
-			{
-				Pitch.ASharp4, new[] {Pitch.FSharp4, Pitch.CSharp4, Pitch.DSharp4, Pitch.F4, Pitch.C4, Pitch.ASharp3}
-			},
-			{
-				Pitch.C4, new[] {Pitch.DSharp4, Pitch.F4, Pitch.GSharp4, Pitch.ASharp3, Pitch.C3}
-			},
-			{
-				Pitch.F4, new[] {Pitch.C3, Pitch.CSharp3, Pitch.GSharp4, Pitch.ASharp4, Pitch.F3}
+				Pitch.G3, new[] {Pitch.C3, Pitch.D3, Pitch.B3, Pitch.E3, Pitch.G4}
 			},
 
+            // When using 'C' as a start note, the following notes are x distance from 'C'
+            // A = -3, ASharp = -2, B = -1, C = +0, CSharp = +1, D = +2, DSharp = +3, E = +4, F = +5, FSharp = +6, G = +7, GSharp = +8
+            // The notes used in a scale from the starting note are: -3, -1, +0, +2, +4, +5, +7
+            // -5 and +7 are the same note with one octave diffance, +0, +12 and -12 are also the same note.
 		};
 
 
