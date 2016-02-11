@@ -8,7 +8,7 @@ namespace ConsoleApplication.Generators
 {
 	class BrotherGenerator : IMusicGenerator
 	{
-		private static Pitch[] Pitches;
+        private static Pitch[] Pitches = new []{ Pitch.A3, Pitch.B3, Pitch.C3, Pitch.D3, Pitch.E3, Pitch.F3, Pitch.G3 };
 
 		private static readonly Dictionary<Pitch, Pitch[]> Second = new Dictionary<Pitch, Pitch[]>()
 		{
@@ -33,6 +33,7 @@ namespace ConsoleApplication.Generators
 			{
 				Pitch.G3, new[] {Pitch.C3, Pitch.D3, Pitch.B3, Pitch.E3, Pitch.G4}
 			},
+
 
             // When using 'C' as a start note, the following notes are x distance from 'C'
             // A = -3, ASharp = -2, B = -1, C = +0, CSharp = +1, D = +2, DSharp = +3, E = +4, F = +5, FSharp = +6, G = +7, GSharp = +8
@@ -69,7 +70,23 @@ namespace ConsoleApplication.Generators
 			return beat;
 		}
 
+        private List<Pitch> ThirdChordNote(Pitch pitch1, Pitch pitch2)
+        {
+            List<Pitch> p;
 
+            Pitch[] pitchnote1 = Second[pitch1];
+            if (Second.ContainsKey(pitch2))
+            {
+                Pitch[] pitchnote2 = Second[pitch2];
+                p =  pitchnote1.Intersect(pitchnote2).ToList();
+            }
+            else
+            {
+                p = pitchnote1.ToList();
+            }
+            p.Remove(pitch2);
+            return p;
+        }
 
 		/// <summary>
 		/// Generates Music
@@ -77,6 +94,8 @@ namespace ConsoleApplication.Generators
 		/// <returns>A collection of music notes</returns>
 		public ICollection<LibNoteMessage> GenerateMusic()
 		{
+            const int velocity = 80;
+
 			int remaining = 8;
 			List<LibNoteMessage> messages = new List<LibNoteMessage>();
 
@@ -94,11 +113,14 @@ namespace ConsoleApplication.Generators
 				float ofset = (8 - remaining)/2f;
 
 				int state = random.Next(Pitches.Length);
-				messages.Add(new NoteOnOff(Pitches[state], 80, beat + ofset, lenght));
+                Pitch first = Pitches[state];
 
-				Console.Write($"{$"({ofset}->{ofset + lenght})".PadRight(remaining == 8 ? 8 : 10)} {(Pitches[state]).ToString().Replace("Sharp", "#").PadRight(3)}".PadRight(14));
 
-				Pitch[] second = Second[Pitches[state]];
+                messages.Add(new NoteOnOff(first, velocity, beat + ofset, lenght));
+
+				Console.Write($"{$"({ofset}->{ofset + lenght})".PadRight(remaining == 8 ? 8 : 10)} {(first).ToString().Replace("Sharp", "#").PadRight(3)}".PadRight(14));
+
+				Pitch[] second = Second[first];
 				int index = random.Next(second.Length + 1);
 
 				const int extra = 10;
@@ -109,9 +131,23 @@ namespace ConsoleApplication.Generators
                 }
 				else
 				{
-					messages.Add(new NoteOnOff(second[index], 80, beat + ofset, lenght));
+					messages.Add(new NoteOnOff(second[index], velocity, beat + ofset, lenght));
 
 					Console.Write($"->{second[index]}".Replace("Sharp", "#").PadRight(extra));
+
+                    if (random.Next(2)==0)
+                    {
+                        List<Pitch> ThirdChord = ThirdChordNote(first, second[index]);
+                        if (ThirdChord.Count != 0)
+                        {
+                            int j = random.Next(ThirdChord.Count);
+                            messages.Add(new NoteOnOff(ThirdChord[j], velocity, beat + ofset, lenght));
+
+                            Console.Write($"->{ThirdChord[j]}".Replace("Sharp", "#").PadRight(extra));
+
+                        }
+                    }
+
 				}
 
 				remaining -= size;
